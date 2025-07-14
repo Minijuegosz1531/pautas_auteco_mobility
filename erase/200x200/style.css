@@ -1,0 +1,140 @@
+body {
+  margin: 0;
+}
+
+#bridgeContainer {
+  position: relative;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  width: 200px;
+  height: 200px;
+}
+
+#bridge {
+  display: block;
+  margin: 0 auto;
+  background-image: url("BorradorS2-200X200.webp");
+  background-image: -webkit-image-set(url("BorradorS2-200X200.webp") 1x);
+  background-size: cover;
+  width: 200px;
+  max-width: 200px;
+  height: 200px;
+  height: auto;
+  cursor: crosshair;
+  cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/circular-cursor.png) 53 53,
+    crosshair;
+}
+
+.hint-overlay {
+  width: 200px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.hint-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hint-content {
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+
+}
+
+.scratch-icon {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  animation: scratchAnimation 2s infinite ease-in-out;
+}
+
+.scratch-icon::before {
+  content: '👆';
+  position: absolute;
+  font-size: 24px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fingerMove 2s infinite ease-in-out;
+}
+
+.scratch-icon::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: scratchGlow 2s infinite ease-in-out;
+}
+
+@keyframes scratchAnimation {
+
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  25% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+
+  50% {
+    transform: scale(1.2) rotate(5deg);
+  }
+
+  75% {
+    transform: scale(1.1) rotate(-3deg);
+  }
+}
+
+@keyframes fingerMove {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateX(0px);
+  }
+
+  25% {
+    transform: translate(-50%, -50%) translateX(-8px);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) translateX(8px);
+  }
+
+  75% {
+    transform: translate(-50%, -50%) translateX(-4px);
+  }
+}
+
+@keyframes scratchGlow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.5);
+  }
+}

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="ad.size" content="width=300,height=600">
+  <title>300x600</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .zona-clic {
+      color: black;
+      position: absolute;
+      z-index: 999;
+      font-size: 20px;
+      top: 488px;
+      left: 15px;
+      background: transparent;
+      width: 270px;
+      height: 27px;
+      cursor: pointer;
+    }
+
+    .container {
+      position: relative;
+      width: 300px;
+      height: 600px;
+      overflow: hidden;
+    }
+
+    .container-mixturas {
+      position: absolute;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 1;
+      top: 63%;
+      left: -5px;
+      translate: 0 50%;
+    }
+
+    .container-mixturas img[data-image="0"] {
+      animation: imageTransition 4.5s infinite;
+      animation-delay: 0s;
+      position: absolute;
+      left: 17px;
+      top: 23px;
+    }
+
+    .container-mixturas img[data-image="1"] {
+      animation: imageTransition 4.5s infinite;
+      animation-delay: 1.5s;
+      position: absolute;
+      left: 113px;
+      top: 23px;
+    }
+
+    .container-mixturas img[data-image="2"] {
+      animation: imageTransition 4.5s infinite;
+      animation-delay: 3s;
+      position: absolute;
+      left: 212px;
+      top: 23px
+    }
+
+    @keyframes imageTransition {
+      0% {
+        transform: scale(1);
+      }
+
+      11.11% {
+        transform: scale(1.2);
+      }
+
+      33.33% {
+        transform: scale(1.2);
+      }
+
+      44.44% {
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <a class="zona-clic" onclick="exit();"></a>
+    <img src="./1.Fondo300x600 .webp" alt="" />
+    <img src="./RaiderFI Mixturas FB 300x600.webp" alt="" style="position: absolute; left: 0; top: 0" data-index="0" />
+    <img src="./RaiderFI Mixturas BNS 300x600.webp" alt="" style="position: absolute; left: 0; top: 0" data-index="1" />
+    <img src="./RaiderFI Mixturas GC 300x600.webp" alt="" style="position: absolute; left: 0; top: 0" data-index="2" />
+    <div class="container-mixturas">
+      <img src="./ForzzaBlue-300x600.webp" alt="" data-image="0" />
+      <img src="./BlackNSilver-300x600.webp" alt="" data-image="1" />
+      <img src="./GoldenCalifornia-300x600.webp" alt="" data-image="2" />
+    </div>
+  </div>
+  <script>
+    // Selecciona todas las imágenes principales con data-index
+    const mainImages = document.querySelectorAll("img[data-index]");
+    // Selecciona las imágenes de los botones
+    const buttons = document.querySelectorAll(".container-mixturas img");
+
+    function showImage(index) {
+      mainImages.forEach((img) => {
+        img.style.display =
+          img.getAttribute("data-index") === index ? "block" : "none";
+      });
+    }
+
+    // Inicialmente muestra solo la primera imagen
+    showImage("0");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        showImage(btn.getAttribute("data-image"));
+      });
+    });
+    function exit() {
+      window.open("https://www.auteco.com.co/moto-tvs-raider-125-fi/p", '_blank');
+    }
+  </script>
+</body>
+
+</html>

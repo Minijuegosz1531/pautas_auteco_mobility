@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="ad.size" content="width=580,height=400">
+    <title>580x400 360</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            position: relative;
+            width: 580px;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .zona-clic {
+            color: black;
+            position: absolute;
+            z-index: 999;
+            font-size: 20px;
+            top: 310px;
+            left: 305px;
+            background: transparent;
+            width: 190px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a class="zona-clic" onclick="exit();"></a>
+        <img src="./580x400.webp" alt="">
+        <canvas id="canvas" width="580" height="400"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.querySelector("#canvas");
+        const ctx = canvas.getContext('2d');
+
+        const images = [];
+        let currentFrame = 1;
+        let isPlaying = true;
+        let animationSpeed = 1;
+        let lastTime = 0;
+        let isDragging = false;
+        let lastMouseX = 0;
+        let loadedImages = 0;
+
+        const totalFrames = 8;
+        const frameDelay = 1000;
+
+        window.addEventListener('load', pageLoaded);
+
+        function pageLoaded() {
+            for (let i = 1; i <= totalFrames; i++) {
+                const number = i.toString().padStart(2, '0');
+                const url = `./${number}.webp`;
+                const image = new Image();
+
+                image.onload = () => {
+                    images[i] = image;
+                    loadedImages++;
+
+                    if (loadedImages === 1) {
+                        loadImage(1);
+                    }
+
+                    if (loadedImages === totalFrames) {
+                        startAutoRotation();
+                    }
+                }
+
+                image.onerror = () => {
+                    console.warn(`No se pudo cargar la imagen: ${url}`);
+                    loadedImages++;
+                    if (loadedImages === totalFrames) {
+                        startAutoRotation();
+                    }
+                }
+
+                image.src = url;
+            }
+        }
+
+        function loadImage(index) {
+            if (images[index]) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(images[index], 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function startAutoRotation() {
+            function animate(currentTime) {
+                if (isPlaying && !isDragging) {
+                    if (currentTime - lastTime >= frameDelay / animationSpeed) {
+                        currentFrame++;
+                        if (currentFrame > totalFrames) currentFrame = 1;
+
+                        loadImage(currentFrame);
+                        lastTime = currentTime;
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+        }
+        canvas.addEventListener('mousedown', startDrag);
+        canvas.addEventListener('mousemove', drag);
+        canvas.addEventListener('mouseup', stopDrag);
+        canvas.addEventListener('mouseleave', stopDrag);
+
+        function startDrag(e) {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            canvas.style.cursor = 'grabbing';
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+
+            const deltaX = e.clientX - lastMouseX;
+            const sensitivity = 10;
+
+            if (Math.abs(deltaX) > sensitivity) {
+                if (deltaX > 0) {
+                    currentFrame++;
+                    if (currentFrame > totalFrames) currentFrame = 1;
+                } else {
+                    currentFrame--;
+                    if (currentFrame < 1) currentFrame = totalFrames;
+                }
+
+                loadImage(currentFrame);
+                lastMouseX = e.clientX;
+            }
+        }
+
+        function stopDrag() {
+            isDragging = false;
+            canvas.style.cursor = 'grab';
+        }
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            touchStartX = e.touches[0].clientX;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (!isDragging) return;
+
+            const deltaX = e.touches[0].clientX - touchStartX;
+            const sensitivity = 10;
+
+            if (Math.abs(deltaX) > sensitivity) {
+                if (deltaX > 0) {
+                    currentFrame++;
+                    if (currentFrame > totalFrames) currentFrame = 1;
+                } else {
+                    currentFrame--;
+                    if (currentFrame < 1) currentFrame = totalFrames;
+                }
+
+                loadImage(currentFrame);
+                touchStartX = e.touches[0].clientX;
+            }
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            isDragging = false;
+        });
+        function exit() {
+            window.open("https://www.auteco.com.co/moto-tvs-raider-125-fi/p", '_blank');
+        }
+    </script>
+
+</body>
+
+</html>
